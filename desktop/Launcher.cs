@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 class Launcher : Form
 {
+    bool smoke = Array.IndexOf(Environment.GetCommandLineArgs(), "--smoke-test") >= 0;
     Process server;
     IntPtr job;
     string url;
@@ -103,7 +104,8 @@ class Launcher : Form
             if (!ok || server.HasExited) throw new Exception("El servidor no responde. Vuelve a abrir el juego.");
             open.Enabled = true;
             status.Text = "El juego está abierto en tu navegador.\nMantén esta ventana abierta mientras juegas.\nTus datos se guardan en " + data;
-            OpenBrowser();
+            if (smoke) File.WriteAllText(Environment.GetEnvironmentVariable("GOBLIN_SMOKE_REPORT"), url + "\n" + server.Id);
+            else OpenBrowser();
         }
         catch (Exception ex)
         {

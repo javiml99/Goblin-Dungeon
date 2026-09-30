@@ -5,6 +5,7 @@ require_once __DIR__ . '/bootstrap.php';
 function render_turn(): void {
     ob_start();
     $game = $_SESSION['partida'][0];
+    if ($_SESSION['xogador'][0]->getVida() <= 0) $game->setTurno('derrota');
     $game->controladorTurnos($game->getTurno());
     $scene = ob_get_clean();
     if ($_SESSION['xogador'][0]->getVida() <= 0) {
