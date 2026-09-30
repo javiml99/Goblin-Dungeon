@@ -22,18 +22,20 @@ opt = args.parse_args()
 root = Path(opt.root).resolve() if opt.root else Path(__file__).resolve().parents[1]
 
 def exercise(local):
-    with tempfile.TemporaryDirectory(prefix="goblin http ") as tmp:
+    with tempfile.TemporaryDirectory(prefix="goblin ~ http ") as tmp:
         with socket.socket() as s:
             s.bind(("127.0.0.1", 0))
             port = s.getsockname()[1]
         base = f"http://127.0.0.1:{port}"
         env = os.environ.copy()
-        env.update(GOBLIN_LOCAL="1" if local else "0", GOBLIN_DATA_DIR=tmp)
+        env.update(GOBLIN_LOCAL="1" if local else "0", GOBLIN_DATA_DIR=tmp,
+                   GOBLIN_SESSION_DIR=tmp)
+        env.pop("GOBLIN_ERROR_LOG", None)
         cmd = [opt.php]
         if opt.ini: cmd += ["-c", opt.ini]
-        if opt.ext: cmd += ["-d", "extension_dir=" + opt.ext]
+        if opt.ext: env["GOBLIN_EXTENSION_DIR"] = opt.ext
         cmd += ["-d", "display_errors=0", "-d", "log_errors=1",
-                "-d", "error_reporting=32767", "-d", "session.save_path=" + tmp,
+                "-d", "error_reporting=32767",
                 "-S", f"127.0.0.1:{port}", "-t", str(root / "GoblinDungeon"), str(root / "router.php")]
         logpath = Path(tmp) / "server.log"
         with logpath.open("w+") as log:
@@ -110,6 +112,6 @@ def exercise(local):
                 proc.wait(timeout=10)
                 log.flush()
                 logs = logpath.read_text(errors="replace")
-                assert not re.search(r"PHP (Warning|Fatal error|Deprecated|Parse error)", logs), logs
+                assert not re.search(r"PHP(?::| (Warning|Fatal error|Deprecated|Parse error))", logs), logs
 exercise(True)
 exercise(False)

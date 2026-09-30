@@ -32,6 +32,14 @@ function local_mode(): bool {
 }
 
 if (PHP_SAPI !== 'cli') {
+    // Set paths through PHP's API: CLI -d values are parsed as INI syntax and
+    // Windows short names (RUNNER~1), spaces and punctuation can break them.
+    if ($sessionDir = getenv('GOBLIN_SESSION_DIR')) {
+        session_save_path($sessionDir);
+    }
+    if ($errorLog = getenv('GOBLIN_ERROR_LOG')) {
+        ini_set('error_log', $errorLog);
+    }
     ini_set('session.use_strict_mode', '1');
     ini_set('session.use_only_cookies', '1');
     session_name('goblin_session');

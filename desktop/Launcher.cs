@@ -61,14 +61,14 @@ class Launcher : Form
             var info = new ProcessStartInfo(php) {
                 WorkingDirectory = root, UseShellExecute = false, CreateNoWindow = true,
                 Arguments = "-c \"" + Path.Combine(root, "runtime", "php.ini") + "\""
-                  + " -d \"extension_dir=" + Path.Combine(root, "runtime", "ext") + "\""
-                  + " -d \"session.save_path=" + Path.Combine(data, "sessions") + "\""
-                  + " -d \"error_log=" + Path.Combine(data, "php-error.log") + "\""
                   + " -S 127.0.0.1:" + port + " -t \"" + Path.Combine(root, "GoblinDungeon") + "\""
                   + " \"" + Path.Combine(root, "router.php") + "\""
             };
             info.EnvironmentVariables["GOBLIN_LOCAL"] = "1";
             info.EnvironmentVariables["GOBLIN_DATA_DIR"] = data;
+            info.EnvironmentVariables["GOBLIN_EXTENSION_DIR"] = Path.Combine(root, "runtime", "ext");
+            info.EnvironmentVariables["GOBLIN_SESSION_DIR"] = Path.Combine(data, "sessions");
+            info.EnvironmentVariables["GOBLIN_ERROR_LOG"] = Path.Combine(data, "php-error.log");
             info.EnvironmentVariables["GOBLIN_READY_TOKEN"] = ready;
             job = CreateJobObject(IntPtr.Zero, null);
             if (job == IntPtr.Zero) throw new Exception("No se pudo crear el supervisor del servidor.");

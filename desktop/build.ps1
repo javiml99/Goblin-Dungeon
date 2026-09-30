@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $root = Split-Path $PSScriptRoot -Parent
 Set-Location $root
-$out = Join-Path $root 'dist/GoblinDungeon-Windows'
+$out = Join-Path $root 'dist/Goblin Dungeon ~ Windows'
 New-Item $out -ItemType Directory -Force | Out-Null
 New-Item 'build' -ItemType Directory -Force | Out-Null
 $zipName = 'php-8.4.26-nts-Win32-vs17-x64.zip'
@@ -29,10 +29,11 @@ Copy-Item "$($crt.FullName)/*.dll" "$out/runtime/"
 $csc = "$env:WINDIR/Microsoft.NET/Framework64/v4.0.30319/csc.exe"
 & $csc /nologo /target:winexe /platform:x64 "/out:$out/GoblinDungeon.exe" /reference:System.Windows.Forms.dll /reference:System.Drawing.dll "$(Join-Path $PSScriptRoot 'Launcher.cs')"
 if ($LASTEXITCODE -ne 0) { throw 'Launcher compilation failed' }
-& "$out/runtime/php.exe" -c "$out/runtime/php.ini" -d "extension_dir=$out/runtime/ext" -r 'if (!extension_loaded("pdo_sqlite")) exit(1); echo PHP_VERSION;'
+$env:GOBLIN_EXTENSION_DIR = "$out/runtime/ext"
+& "$out/runtime/php.exe" -c "$out/runtime/php.ini" -r 'if (!extension_loaded("pdo_sqlite")) exit(1); echo PHP_VERSION;'
 if ($LASTEXITCODE -ne 0) { throw 'Bundled PHP or SQLite failed' }
 $env:GOBLIN_DATA_DIR = Join-Path $root 'build/test data'
-& "$out/runtime/php.exe" -c "$out/runtime/php.ini" -d "extension_dir=$out/runtime/ext" tests/regression.php
+& "$out/runtime/php.exe" -c "$out/runtime/php.ini" tests/regression.php
 if ($LASTEXITCODE -ne 0) { throw 'Regression tests failed' }
 python tests/http_smoke.py --root "$out" --php "$out/runtime/php.exe" --ini "$out/runtime/php.ini" --ext "$out/runtime/ext"
 if ($LASTEXITCODE -ne 0) { throw 'HTTP tests failed' }
