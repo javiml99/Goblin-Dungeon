@@ -1,0 +1,24 @@
+GOBLIN DUNGEON - Windows 10/11, 64 bits
+
+1. Extrae TODO el ZIP en una carpeta.
+2. Abre GoblinDungeon.exe.
+3. El juego se abre en tu navegador. No necesita Internet ni XAMPP.
+4. Mantén abierta la ventana del lanzador. Ciérrala para detener el servidor.
+
+No abras el ejecutable directamente dentro del ZIP.
+No es un instalador: no necesita permisos de administrador.
+.NET Framework 4.x forma parte de las instalaciones normales de Windows 10/11.
+
+Las cuentas, avatares y victorias se guardan en:
+%LOCALAPPDATA%\GoblinDungeon
+
+Una partida en curso depende de la sesión del navegador. No es un sistema
+de partidas guardadas completo. Borrar cookies puede hacerte perder la partida.
+Las cuentas locales no se sincronizan con una futura web.
+Conserva una copia de la carpeta de datos antes de cambiar de ordenador.
+
+Si algo falla, consulta php-error.log en la carpeta de datos.
+El ejecutable no tiene firma comercial; Windows puede mostrar un aviso
+de editor desconocido. Descárgalo solamente del repositorio del autor.
+
+Código fuente: https://github.com/javiml99/Goblin-Dungeon

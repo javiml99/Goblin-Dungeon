@@ -4,8 +4,7 @@
   Fecha de Última modificación: 21/11/2022
   Versión: 0.9
  */
-?>
-<?php
+
 class Xogador
 {
   private $nombre; 
@@ -94,5 +93,3 @@ class Xogador
   }
   
 }
-  
-  ?>

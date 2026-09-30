@@ -1,0 +1,7 @@
+Options -Indexes
+DirectoryIndex index.php
+RewriteEngine On
+RewriteRule ^$ index.php [END]
+RewriteRule ^(?:index|GoblinDungeon|login|rexistro|perfil|usuarios|borrar|cerrar|avatar)\.php$ - [END]
+RewriteRule ^(?:imx/[a-zA-Z0-9+_.-]+\.(?:png|jpg)|estilos/[a-zA-Z0-9_-]+\.css)$ - [END]
+RewriteRule ^ - [F,END]

@@ -1,6 +1,6 @@
 <?php
-include("Xogador.class.php");
-include("Goblin.class.php");
+require_once __DIR__ . "/Xogador.class.php";
+require_once __DIR__ . "/Goblin.class.php";
 
 class Partida
 {
@@ -138,9 +138,9 @@ class Partida
 
   public function esquiva($ataqueGoblin, $esquiva, $vida, $defensa)   //Con esto se calcula el daño que recibe el personaje del jugador en cada ataque, usando la esquiva como un porcentaje para saber si esquivó el daño
   {
-    $tiro = rand(0, 100);
+    $tiro = random_int(1, 100);
     if ($tiro > $esquiva) {
-      $vida -= $ataqueGoblin - $defensa/8;
+      $vida -= max(0, $ataqueGoblin - $defensa / 8);
       $_SESSION['xogador'][0]->setVida($vida);
     } else {
       echo "¡Esquivaste el golpe!";
@@ -216,7 +216,7 @@ class Partida
             break;
           case 3:
             $item = "Capa";
-            $Sumarataque = $_SESSION['xogador'][0]->getEsquiva() + 30;
+            $Sumarataque = min(100, $_SESSION['xogador'][0]->getEsquiva() + 30);
             $inventario = array();
             $inventario[] = $_SESSION['xogador'][0]->conseguirObjeto($_SESSION['xogador'][0]->getInventario(), $item);
             $_SESSION['xogador'][0]->setEsquiva($Sumarataque);
@@ -231,11 +231,11 @@ class Partida
             echo "<img src='imx/espada+.png' > <h2>En un cofre has encontrado la espada de las edades </h2> <h3>Consigues 60 puntos de ataque </h3> ";
             break;
           case 5:
-            $item = "Escudo+";
-            $Sumarataque = $_SESSION['xogador'][0]->getAtaque() + 60;  
+            $item = "Armadura+";
+            $Sumarataque = $_SESSION['xogador'][0]->getVida() + 60;  
             $inventario = array();         
             $inventario[] = $_SESSION['xogador'][0]->conseguirObjeto($_SESSION['xogador'][0]->getInventario(), $item);
-            $_SESSION['xogador'][0]->setDefensa($Sumarataque);
+            $_SESSION['xogador'][0]->setVida($Sumarataque);
             echo "<img src='imx/armadura+.png' > <h2>En un cofre has encontrado la armadura de las edades </h2> <h3>Consigues 60 puntos de vida </h3> ";
             break;
         }

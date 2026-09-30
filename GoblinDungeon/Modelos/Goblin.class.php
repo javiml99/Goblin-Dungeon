@@ -37,6 +37,3 @@ public function setVidaGoblin($vidaGoblin){
   $this->vidaGoblin = $vidaGoblin;
 }
   }
-    
-    
-    ?>

@@ -1,0 +1,5 @@
+var/
+build/
+dist/
+*.sqlite
+*.sqlite-*
