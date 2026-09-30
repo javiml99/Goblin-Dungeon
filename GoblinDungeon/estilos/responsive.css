@@ -1,0 +1,28 @@
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; }
+nav { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; background: #101810; padding: 1rem; }
+nav a, nav a:visited { color: #d9ffb0; }
+nav img { vertical-align: middle; }
+nav form { margin: 0; }
+main { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
+.panel { background: #162316; color: #f5f5ed; padding: 1.5rem; border-radius: 12px; }
+.panel a, .panel a:visited { color: #d9ffb0; }
+label { display: block; margin: 1rem 0; }
+input, select, button { font: inherit; max-width: 100%; padding: .5rem; }
+button { background: #d9ffb0; color: #14200f; cursor: pointer; border: 2px solid #608543; border-radius: 6px; }
+button:focus-visible, a:focus-visible { outline: 3px solid orange; }
+footer { position: static; height: auto; padding: 1rem; margin-top: 2rem; }
+#contPrincipal { width: 100%; height: auto; }
+#contMenu { height: auto; padding: 1rem; }
+#contMenu img { max-width: min(260px, 80%); }
+#contSecundario, #contInterfaz { height: auto; }
+#contEstadisticas, #contOpciones { height: auto; width: 50%; padding: 1rem; overflow-wrap: anywhere; }
+#contOpciones { display: flex; }
+#contInventario { height: auto; overflow-wrap: anywhere; }
+.table-scroll { overflow-x: auto; }
+td, th { padding: .5rem; text-align: left; overflow-wrap: anywhere; }
+@media(max-width: 720px) {
+  #contSecundario, #contInterfaz { display: block; }
+  #contInterfaz, #contInventario, #contEstadisticas, #contOpciones { width: 100%; }
+  nav { font-size: 1rem; }
+}

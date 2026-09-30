@@ -4,8 +4,7 @@
   Fecha de Última modificación: 21/11/2022
   Versión: 0.9
  */
-?>
-<?php
+
 class Usuario
 {
   private $rol;
@@ -26,7 +25,7 @@ class Usuario
 
   public function esAdmin()
   {
-    if ($_SESSION['rol'] == 'administrador') {
+    if ($this->rol === 'administrador') {
       return true;
     } else {
       return false;
@@ -65,5 +64,3 @@ class Usuario
 
   
 }
-
-?>

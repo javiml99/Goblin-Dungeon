@@ -1,14 +1,7 @@
 <?php
-/*
-  Autor: Francisco Javier Muiños López
-  Fecha de Última modificación: 15/11/2022
-  Versión: 0.89989928982995
- */
-?>
-<?php
-session_start();
-$_SESSION=array();
-session_unset(); 
+require_once __DIR__ . '/bootstrap.php';
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); header('Allow: POST'); exit; }
+$_SESSION = [];
 session_destroy();
-header('Location: login.php');
- ?>
+setcookie(session_name(), '', ['expires' => time() - 3600, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
+redirect('login.php');

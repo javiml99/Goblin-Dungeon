@@ -1,60 +1,13 @@
-<?php
-/*
-  Autor: Francisco Javier Muiños López
-  Fecha de Última modificación: 21/11/2022
-  Versión: 0.9
- */
-?>
-<p>
-    <?php
-    include_once 'funciones.php';
-    if (isset($_SESSION['usuario'])) {
-    echo "<span class='usuario'>";
-    if (file_exists('imx/' . $_SESSION['usuario'] . ".png")) {
-        echo "<a href='perfil.php'> <img height='50px' width='50px' src=imx/" . $_SESSION['usuario'] . ".png> </a> &nbsp" .$_SESSION['usuario'] . "&nbsp &nbsp GOBLIN DUNGEON";
-    } else {
-        echo "    <a href='provisional.php'> <img src='imx/default.jpg' height='50px' width='50px'> </a> &nbsp &nbsp &nbsp GOBLIN DUNGEON";
-    }}
-    
-    if (!isset($_SESSION['usuario'])){
-        echo "    <a href='login.php'> <img src='imx/default.jpg' height='50px' width='50px'> </a> &nbsp &nbsp &nbsp GOBLIN DUNGEON";
-    }
-       
-    ?>
-    </span>
-    <span id="menu">
-        <?php
-        if (isset($_SESSION['rol'])) {
-            if ($_SESSION['rol'] == 'administrador') {
-                echo '<a href="usuarios.php"> Usuarios </a>&nbsp;';
-            }
-        }
-        ?>
-        &nbsp;
-        <a href="GoblinDungeon.php"> Index </a> &nbsp;
-        
-        <?php
-        if (isset($_SESSION['rol']) && isset($_SESSION['usuario'])) {
-            echo "<a href='perfil.php'> Perfil </a> &nbsp;";          
-        } else {
-            
-        }
-
-        if (isset($_SESSION['rol']) && isset($_SESSION['usuario'])) {
-            echo "<a href='cerrar.php'> Cerrar sesión </a> &nbsp;";
-            echo "<img src='imx/huh.jpg' height='50px' width='50px'> </span>";
-        } else {
-            echo "<a href='login.php'> Iniciar Sesión </a> &nbsp;";
-            echo "<a href='rexistro.php'> Rexistrarse </a> &nbsp;";
-            echo "<img src='imx/huh.jpg' height='50px' width='50px'> </span>";
-        }
-        
-        ?>
-        
-        
-        
-        
-
-
-
-</p>
+<?php require_once __DIR__ . '/bootstrap.php'; ?>
+<nav aria-label="Menú principal">
+<a href="GoblinDungeon.php"><img src="imx/logo.png" width="48" height="48" alt=""> Goblin Dungeon</a>
+<a href="GoblinDungeon.php">Jugar</a>
+<?php if (isset($_SESSION['usuario'])): ?>
+<span><?= e(!empty($_SESSION['guest']) ? 'Jugador local' : $_SESSION['usuario']) ?></span>
+<a href="perfil.php">Perfil</a>
+<?php if (($_SESSION['rol'] ?? '') === 'administrador'): ?><a href="usuarios.php">Usuarios</a><?php endif; ?>
+<?php if (empty($_SESSION['guest'])): ?>
+<form method="post" action="cerrar.php"><?= csrf_field() ?><button>Cerrar sesión</button></form>
+<?php else: ?><a href="login.php">Usar una cuenta</a><?php endif; ?>
+<?php else: ?><a href="login.php">Iniciar sesión</a><a href="rexistro.php">Registrarse</a><?php endif; ?>
+</nav>
