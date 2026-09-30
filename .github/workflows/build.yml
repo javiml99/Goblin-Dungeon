@@ -26,6 +26,7 @@ jobs:
   windows:
     needs: test
     runs-on: windows-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Build and test bundled runtime
@@ -39,6 +40,40 @@ jobs:
             dist/SHA256SUMS.txt
           retention-days: 30
           if-no-files-found: error
+  preview:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/codex/windows-playable' && contains(github.event.head_commit.message, '[release-preview]')
+    needs: windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: GoblinDungeon-Windows
+          path: dist
+      - name: Publish tested Windows preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+          TAG: v1.0.0-preview.${{ github.run_number }}
+        run: |
+          cat > release-notes.md <<'NOTES'
+          Versión de prueba para Windows 10/11 de 64 bits.
+
+          1. Descarga **GoblinDungeon-Windows.zip**.
+          2. Extrae todos los archivos en una carpeta.
+          3. Abre **GoblinDungeon.exe** y mantén el lanzador abierto mientras juegas.
+
+          Incluye PHP, SQLite y sus dependencias. No necesita XAMPP ni conexión a Internet para jugar. El ejecutable no tiene firma comercial.
+
+          Validación automática: reglas del juego, cuentas, sesiones, permisos y HTTP en Linux y Windows; arranque y cierre del ejecutable en Windows. Pendiente de prueba manual en un PC con Windows 10/11.
+
+          Las victorias se guardan localmente. La partida en curso depende de la sesión del navegador; todavía no hay un guardado completo. La web y el dominio se prepararán por separado.
+          NOTES
+          gh release create "$TAG" dist/GoblinDungeon-Windows.zip dist/SHA256SUMS.txt \
+            --target "$SOURCE_SHA" --prerelease --title "Goblin Dungeon — versión de prueba para Windows" \
+            --notes-file release-notes.md
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: windows

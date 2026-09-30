@@ -74,6 +74,9 @@ El script descarga la versión de PHP fijada y compila el lanzador.
 
 Al crear una etiqueta `v*`, el workflow crea una **Release en borrador** con el ZIP
 y su SHA256. Revisar/probar el ZIP antes de publicar la Release.
+En la rama `codex/windows-playable`, un commit con `[release-preview]` publica
+una versión de prueba `v1.0.0-preview.NUMERO` únicamente después de superar
+las pruebas y la compilación de Windows. La descarga pública está en Releases.
 El ejecutable no está firmado comercialmente.
 
 ## Web y dominio
